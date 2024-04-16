@@ -1,0 +1,448 @@
+{
+	"info": {
+		"_postman_id": "25de473c-d7fa-4344-8370-e0531e87f649",
+		"name": "04-23-auto-cali marketing ENV Adv",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33714722"
+	},
+	"item": [
+		{
+			"name": "Add a new address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"//One more way to set Env Var ID\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"ID\", jsonData.id);\r",
+							"\r",
+							"pm.test(\"Entire Header Keys-Values are present\", function () {\r",
+							"    pm.response.to.have.header(\"content-Type\", \"application/json;charset=utf-8\");\r",
+							"    pm.response.to.have.header(\"Content-Length\", \"45\");\r",
+							"    pm.response.to.have.header(\"server\", \"Pepyaka\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.unset(\"ID\");\r",
+							"pm.environment.unset(\"COMPANY\");\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\": {\r\n        \"fullName\": {\r\n            \"firstName\": \"Arnold\",\r\n            \"lastName\": \"Schwartz\"\r\n        }\r\n    },\r\n    \"company\": \"Arni\",\r\n    \"taxInfo\": {\r\n        \"id\": null,\r\n        \"type\": null\r\n    },\r\n    \"addressLine1\": \"123 William Street\",\r\n    \"addressLine2\": \"Apt 444\",\r\n    \"street\": {\r\n        \"name\": null,\r\n        \"number\": null\r\n    },\r\n    \"city\": \"New York\",\r\n    \"country\": \"USA\",\r\n    \"subdivision\": \"NY\",\r\n    \"zipCode\": \"10038\",\r\n    \"phoneNumber\": \"1234567890\",\r\n    \"location\": null\r\n},\r\n\"setAsDefault\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses",
+					"protocol": "https",
+					"host": [
+						"addresses",
+						"wixapps",
+						"net"
+					],
+					"path": [
+						"_api",
+						"addresses-web",
+						"v1",
+						"addresses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show existing postal address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"ID is correct\"), function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.address.id).to.eql(pm.environment.get(\"ID\"));\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Entire Header Keys-Values are present\", function () {\r",
+							"    pm.response.to.have.header(\"content-Type\", \"application/json;charset=utf-8\");\r",
+							"    pm.response.to.have.header(\"Content-Length\", \"695\");\r",
+							"    pm.response.to.have.header(\"server\", \"Pepyaka\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses?ID={{ID}}",
+					"protocol": "https",
+					"host": [
+						"addresses",
+						"wixapps",
+						"net"
+					],
+					"path": [
+						"_api",
+						"addresses-web",
+						"v1",
+						"addresses"
+					],
+					"query": [
+						{
+							"key": "ID",
+							"value": "{{ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update existing address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"ID is correct\"), function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.address.id).to.eql(pm.environment.get(\"ID\"));\r",
+							"}\r",
+							"pm.test(\"COMPANY is correct\"), function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.address.company).to.eql(pm.environment.get(\"COMPANY\"));\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Entire Header Keys-Values are present\", function () {\r",
+							"    pm.response.to.have.header(\"content-Type\", \"application/json;charset=utf-8\");\r",
+							"    pm.response.to.have.header(\"Content-Length\", \"2\");\r",
+							"    pm.response.to.have.header(\"server\", \"Pepyaka\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"COMPANY\", \"Google-\" + new Date().getTime())"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\": {\r\n        \"id\": \"{{ID}}\",\r\n        \"fullName\": {\r\n            \"firstName\": \"Arnold\",\r\n            \"lastName\": \"Schwartzenegger\"\r\n        },\r\n        \"company\": \"{{COMPANY}}\",\r\n        \"taxInfo\": {\r\n            \"id\": null,\r\n            \"type\": null\r\n        },\r\n        \"addressLine1\": \"123 William Street\",\r\n        \"addressLine2\": \"Apt 444\",\r\n        \"street\": {\r\n            \"name\": null,\r\n            \"number\": null\r\n        },\r\n        \"city\": \"New York\",\r\n        \"country\": \"USA\",\r\n        \"subdivision\": \"NY\",\r\n        \"zipCode\": \"10038\",\r\n        \"phoneNumber\": \"1234567890\",\r\n        \"location\": {\r\n            \"latitude\": 40.7094756,\r\n            \"longitude\": -74.0072955\r\n        }\r\n    },\r\n    \"setAsDefault\": false,\r\n    \"fieldMask\": {\r\n        \"paths\": [\r\n            \"fullName.firstName\",\r\n            \"fullName.lastName\",\r\n            \"company\",\r\n            \"addressLine1\",\r\n            \"addressLine2\",\r\n            \"city\",\r\n            \"country\",\r\n            \"subdivision\",\r\n            \"zipCode\",\r\n            \"phoneNumber\",\r\n            \"location.latitude\",\r\n            \"location.longitude\",\r\n            \"setAsDefault\"\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/{{ID}}",
+					"protocol": "https",
+					"host": [
+						"addresses",
+						"wixapps",
+						"net"
+					],
+					"path": [
+						"_api",
+						"addresses-web",
+						"v1",
+						"addresses",
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check updated postal address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"ID is correct\"), function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.address.id).to.eql(pm.environment.get(\"ID\"));\r",
+							"}\r",
+							"pm.test(\"Entire Header Keys-Values are present\", function () {\r",
+							"    pm.response.to.have.header(\"content-Type\", \"application/json;charset=utf-8\");\r",
+							"    pm.response.to.have.header(\"Content-Length\", \"953\");\r",
+							"    pm.response.to.have.header(\"server\", \"Pepyaka\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses?ID={{ID}}",
+					"protocol": "https",
+					"host": [
+						"addresses",
+						"wixapps",
+						"net"
+					],
+					"path": [
+						"_api",
+						"addresses-web",
+						"v1",
+						"addresses"
+					],
+					"query": [
+						{
+							"key": "ID",
+							"value": "{{ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete postal address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Entire Header Keys-Values are present\", function () {\r",
+							"    pm.response.to.have.header(\"content-Type\", \"application/json;charset=utf-8\");\r",
+							"    pm.response.to.have.header(\"Content-Length\", \"2\");\r",
+							"    pm.response.to.have.header(\"server\", \"Pepyaka\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/{{ID}}",
+					"protocol": "https",
+					"host": [
+						"addresses",
+						"wixapps",
+						"net"
+					],
+					"path": [
+						"_api",
+						"addresses-web",
+						"v1",
+						"addresses",
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check deleted postal address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Entire Header Keys-Values are present\", function () {\r",
+							"    pm.response.to.have.header(\"content-Type\", \"application/json;charset=utf-8\");\r",
+							"    pm.response.to.have.header(\"Content-Length\", \"191\");\r",
+							"    pm.response.to.have.header(\"server\", \"Pepyaka\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://addresses.wixapps.net/_api/addresses-web/v1/addresses/{{ID}}?ID={{ID}}",
+					"protocol": "https",
+					"host": [
+						"addresses",
+						"wixapps",
+						"net"
+					],
+					"path": [
+						"_api",
+						"addresses-web",
+						"v1",
+						"addresses",
+						"{{ID}}"
+					],
+					"query": [
+						{
+							"key": "ID",
+							"value": "{{ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "8SDEJeRCGNaU4Vx-yVxaj_9QM-QIsyxx8lfk6XJ_LV0.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDI0LTA0LTE2VDA0OjQ0OjI0LjgzMVoiLCJ1aWQiOiIyNDQ2ZjBhNS01MTU0LTRlZDktYjQ2OC03MDI4MzUyOGRjZjAiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjIwYzA4OTY3LWMyYzktNGRlMC1iOGIzLTAzZjQ4YTgzNDVlMSIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyNC0wNC0xNlQwODo0NDoyNC44MzFaIiwiaGFzVXNlclJvbGUiOmZhbHNlLCJzaWQiOiJjNTk3OWY5OC1jMWE1LTQwYTgtOTcyYS03YzQzNWY0Mzc3MDIiLCJzY3QiOiIyMDI0LTA0LTExVDExOjU2OjM1LjExOFoifQ",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
